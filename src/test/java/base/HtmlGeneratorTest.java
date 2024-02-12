@@ -1,6 +1,6 @@
 package base;
 
-import generator.SvgGenerator;
+import generator.HtmlGenerator;
 import model.OsmMap;
 import org.junit.Test;
 import parser.OsmParser;
@@ -9,12 +9,12 @@ import java.io.IOException;
 
 import static base.Utils.getResourceFileAsString;
 
-public class SvgGeneratorTest {
+public class HtmlGeneratorTest {
 
     @Test
     public void test1() throws IOException {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("xml1.xml"));
-        SvgGenerator generator = new SvgGenerator(osmMap, 100, 100);
+        HtmlGenerator generator = new HtmlGenerator(osmMap, 100, 100);
         System.out.println(generator.generate());
     }
 }
