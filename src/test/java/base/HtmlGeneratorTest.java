@@ -17,4 +17,11 @@ public class HtmlGeneratorTest {
         HtmlGenerator generator = new HtmlGenerator(osmMap, 100, 100);
         System.out.println(generator.generate());
     }
+
+    @Test
+    public void test2() throws IOException {
+        OsmMap osmMap = OsmParser.parse(getResourceFileAsString("map2.osm"));
+        HtmlGenerator generator = new HtmlGenerator(osmMap, 300, 150);
+        System.out.println(generator.generate());
+    }
 }

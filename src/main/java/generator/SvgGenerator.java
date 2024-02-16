@@ -4,8 +4,8 @@ import model.*;
 
 public class SvgGenerator implements Generator {
 
-    public static int DEFAULT_WIDTH = 400;
-    public static int DEFAULT_HEIGHT = 400;
+    public static int DEFAULT_WIDTH = 300;
+    public static int DEFAULT_HEIGHT = 150;
 
     private OsmMap map;
     private int width;
