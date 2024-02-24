@@ -26,5 +26,7 @@ public class TestParser {
         Assertions.assertEquals(398, map.getNodes().size());
         Assertions.assertEquals(9, map.getWays().size());
         Assertions.assertEquals(2, map.getRelations().size());
+        Assertions.assertEquals(37, map.getRelations().get("11244827").getMembers().size());
+        Assertions.assertEquals(3, map.getRelations().get("11244827").getTags().size());
     }
 }

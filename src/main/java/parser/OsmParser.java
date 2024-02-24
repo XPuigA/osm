@@ -6,7 +6,6 @@ import model.OsmMap;
 
 
 public class OsmParser {
-
     public static OsmMap parse(String content) throws JsonProcessingException {
         XmlMapper mapper = new XmlMapper();
         OsmMap osmMap = mapper.readValue(content, OsmMap.class);

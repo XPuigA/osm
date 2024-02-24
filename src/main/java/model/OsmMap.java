@@ -117,6 +117,7 @@ public class OsmMap {
         this.relationMap = new HashMap<>();
         for (OsmRelation relation : relationsList) {
             this.relationMap.put(relation.getId(), relation);
+            relation.fillMaps();
         }
 
     }

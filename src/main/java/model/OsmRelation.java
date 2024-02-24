@@ -1,14 +1,16 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OsmRelation {
     private String id;
-
     private boolean visible;
     private int version;
     private String changeset;
@@ -16,10 +18,21 @@ public class OsmRelation {
     private String user;
     private String uid;
 
-    @JacksonXmlProperty(localName = "member")
+    @JsonProperty("member")
+    @JacksonXmlElementWrapper(useWrapping = false)
     private List<OsmMember> members = new ArrayList<OsmMember>();
-    @JacksonXmlProperty(localName = "tag")
-    private List<OsmTag> tags = new ArrayList<OsmTag>();
+    @JsonProperty("tag")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    private List<OsmTag> tagsList = new ArrayList<OsmTag>();
+
+    private Map<String, String> tagsMap;
+
+    public void fillMaps() {
+        tagsMap = new HashMap<>();
+        for (OsmTag tag : tagsList) {
+            tagsMap.put(tag.getKey(), tag.getValue());
+        }
+    }
 
     public String getId() {
         return id;
@@ -85,11 +98,19 @@ public class OsmRelation {
         this.members = members;
     }
 
-    public List<OsmTag> getTags() {
-        return tags;
+    public Map<String, String> getTags() {
+        return tagsMap;
     }
 
-    public void setTags(List<OsmTag> tags) {
-        this.tags = tags;
+    public void setTags(Map<String, String> tagsMap) {
+        this.tagsMap = tagsMap;
+    }
+
+    public List<OsmTag> getTagsList() {
+        return tagsList;
+    }
+
+    public void setTagsList(List<OsmTag> tagsList) {
+        this.tagsList = tagsList;
     }
 }
