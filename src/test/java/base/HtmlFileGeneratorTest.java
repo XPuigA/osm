@@ -13,10 +13,9 @@ import static base.Utils.getResourceFileAsString;
 
 public class HtmlFileGeneratorTest {
 
-    private static String destination1 = "D:\\\\map.html";
+    private static String destination1 = "C:\\\\tmp\\\\map.html";
 
     @BeforeAll
-    @AfterAll
     static void deleteFile() throws IOException {
         Files.deleteIfExists(Paths.get(destination1));
     }
@@ -25,6 +24,8 @@ public class HtmlFileGeneratorTest {
     public void test1() throws IOException {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("map2.osm"));
         HtmlFileGenerator generator = new HtmlFileGenerator(osmMap, 300, 150, destination1);
-        System.out.println(generator.generate());
+        String generated = generator.generate();
+        System.out.println(generated);
+
     }
 }

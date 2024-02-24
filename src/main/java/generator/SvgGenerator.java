@@ -29,10 +29,10 @@ public class SvgGenerator implements Generator {
                 OsmNode node1 = map.getNodes().get(way.getNds().get(i - 1).getRef());
                 OsmNode node2 = map.getNodes().get(way.getNds().get(i).getRef());
                 sb.append("\t\t<line")
-                    .append(" x1=\"").append(scaleLatitude(node1.getLat()))
-                    .append("\" y1=\"").append(scaleLongitude(node1.getLon()))
-                    .append("\" x2=\"").append(scaleLatitude(node2.getLat()))
-                    .append("\" y2=\"").append(scaleLongitude(node2.getLon()))
+                    .append(" y1=\"").append(scaleLatitude(node1.getLat()))
+                    .append("\" x1=\"").append(scaleLongitude(node1.getLon()))
+                    .append("\" y2=\"").append(scaleLatitude(node2.getLat()))
+                    .append("\" x2=\"").append(scaleLongitude(node2.getLon()))
                     .append("\" style=\"stroke:red;stroke-width:1\" />\n");
             }
         }
@@ -41,12 +41,12 @@ public class SvgGenerator implements Generator {
     }
 
     private double scaleLatitude(double latitude) {
-        double xNorm = (latitude - map.getBounds().getMinLat()) / (map.getBounds().getMaxLat() - map.getBounds().getMinLat());
-        return xNorm * width;
+        double norm = (latitude - map.getBounds().getMinLat()) / (map.getBounds().getMaxLat() - map.getBounds().getMinLat());
+        return height - (norm * height);
     }
 
     private double scaleLongitude(double longitude) {
-        double yNorm = (longitude - map.getBounds().getMinLon()) / (map.getBounds().getMaxLon() - map.getBounds().getMinLon());
-        return yNorm * height;
+        double norm = (longitude - map.getBounds().getMinLon()) / (map.getBounds().getMaxLon() - map.getBounds().getMinLon());
+        return norm * width;
     }
 }
