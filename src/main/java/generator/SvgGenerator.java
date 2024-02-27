@@ -32,15 +32,7 @@ public class SvgGenerator implements Generator {
     public String generate() {
         StringBuilder sb = new StringBuilder("<svg width=\"" + width + "\" height=\"" + height + "\" xmlns=\"http://www.w3.org/2000/svg\" style=\"background-color:gray\">\n");
         for (OsmRelation relation : map.getRelations().values()) {
-            String type = relation.getTags().get("type");
-            if (type != null && type.equals("multipolygon")) {
-                for (OsmMember member : relation.getMembers()) {
-                    OsmWay way = map.getWays().get(member.getRef());
-                    if (way != null && !drawnWayIds.contains(way.getId())) {
-                        sb.append(drawPolygon(way, relation.getTags()));
-                    }
-                }
-            }
+            sb.append(drawRelation(relation));
         }
         for (OsmWay way : map.getWays().values()) {
             sb.append(drawWay(way));
@@ -49,24 +41,27 @@ public class SvgGenerator implements Generator {
         return sb.toString();
     }
 
-    private String drawPolygon(OsmWay way, Map<String, String> tags) {
-        StringBuilder sb = new StringBuilder("<polygon points=\"");
-        for (int i = 0; i < way.getNds().size(); ++i) {
-            OsmNode node = map.getNodes().get(way.getNds().get(i).getRef());
-            sb.append(scaleLongitude(node.getLon()) + "," + scaleLatitude(node.getLat()) + " ");
+    private String drawRelation(OsmRelation relation) {
+        StringBuilder sb = new StringBuilder();
+        String type = relation.getTags().get("type");
+        if (type != null && type.equals("multipolygon")) {
+            for (OsmMember member : relation.getMembers()) {
+                OsmWay way = map.getWays().get(member.getRef());
+                if (way != null && !drawnWayIds.contains(way.getId())) {
+                    sb.append(drawPolygon(way));
+                }
+            }
         }
-        sb.append("\" style=\"fill:lime;stroke:blue;stroke-width:2;\" />");
-        drawnWayIds.add(way.getId());
         return sb.toString();
     }
 
-    private String drawRoute(OsmWay way, Map<String, String> tags) {
+    private String drawPolygon(OsmWay way) {
         StringBuilder sb = new StringBuilder("<polygon points=\"");
         for (int i = 0; i < way.getNds().size(); ++i) {
             OsmNode node = map.getNodes().get(way.getNds().get(i).getRef());
-            sb.append(scaleLongitude(node.getLon()) + "," + scaleLatitude(node.getLat()) + " ");
+            sb.append(scaleLongitude(node.getLon())).append(",").append(scaleLatitude(node.getLat())).append(" ");
         }
-        sb.append("\" style=\"fill:blue;stroke:brown;stroke-width:5;\" />");
+        sb.append("\" style=\"fill:lime;stroke:blue;stroke-width:2;\" />");
         drawnWayIds.add(way.getId());
         return sb.toString();
     }
