@@ -24,7 +24,8 @@ public class HtmlFileGeneratorTest {
     public void test1() throws IOException {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("map2.osm"));
         HtmlFileGenerator generator = new HtmlFileGenerator(osmMap, 300, 150, destination1);
-        String generated = generator.generate();
+        generator.generate();
+        String generated = generator.getResult();
         System.out.println(generated);
 
     }
@@ -33,7 +34,8 @@ public class HtmlFileGeneratorTest {
     public void test2() throws IOException {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("xml1.xml"));
         HtmlFileGenerator generator = new HtmlFileGenerator(osmMap, 300, 150, destination1);
-        String generated = generator.generate();
+        generator.generate();
+        String generated = generator.getResult();
         System.out.println(generated);
 
     }

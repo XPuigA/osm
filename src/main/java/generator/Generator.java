@@ -4,5 +4,7 @@ import java.io.IOException;
 
 public interface Generator {
 
-    public String generate() throws IOException;
+    public void generate() throws IOException;
+
+    public Object getResult();
 }

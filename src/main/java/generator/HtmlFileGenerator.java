@@ -14,6 +14,7 @@ public class HtmlFileGenerator implements Generator {
     public static int DEFAULT_WIDTH = 300;
     public static int DEFAULT_HEIGHT = 150;
 
+    private String result;
     private OsmMap map;
     private int width;
     private int height;
@@ -32,17 +33,25 @@ public class HtmlFileGenerator implements Generator {
     }
 
     @Override
-    public String generate() throws IOException {
+    public void generate() throws IOException {
         HtmlGenerator generator = new HtmlGenerator(map, width, height);
         RandomAccessFile stream = new RandomAccessFile(destination, "rw");
         FileChannel channel = stream.getChannel();
-        byte[] strBytes = generator.generate().getBytes();
+        generator.generate();
+        byte[] strBytes = generator.getResult().getBytes();
         ByteBuffer buffer = ByteBuffer.allocate(strBytes.length);
         buffer.put(strBytes);
         buffer.flip();
         channel.write(buffer);
         stream.close();
         channel.close();
-        return destination;
+        result = destination;
     }
+
+    @Override
+    public String getResult() {
+        return result;
+    }
+
+
 }

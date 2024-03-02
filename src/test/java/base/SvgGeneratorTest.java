@@ -15,6 +15,7 @@ public class SvgGeneratorTest {
     public void test1() throws IOException {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("xml1.xml"));
         SvgGenerator generator = new SvgGenerator(osmMap, 100, 100);
-        System.out.println(generator.generate());
+        generator.generate();
+        System.out.println(generator.getResult());
     }
 }

@@ -15,13 +15,15 @@ public class HtmlGeneratorTest {
     public void test1() throws IOException {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("xml1.xml"));
         HtmlGenerator generator = new HtmlGenerator(osmMap, 100, 100);
-        System.out.println(generator.generate());
+        generator.generate();
+        System.out.println(generator.getResult());
     }
 
     @Test
     public void test2() throws IOException {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("map2.osm"));
         HtmlGenerator generator = new HtmlGenerator(osmMap, 300, 150);
-        System.out.println(generator.generate());
+        generator.generate();
+        System.out.println(generator.getResult());
     }
 }

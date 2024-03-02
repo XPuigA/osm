@@ -7,6 +7,7 @@ public class HtmlGenerator implements Generator {
     public static int DEFAULT_WIDTH = 300;
     public static int DEFAULT_HEIGHT = 150;
 
+    private String result;
     private OsmMap map;
     private int width;
     private int height;
@@ -22,8 +23,15 @@ public class HtmlGenerator implements Generator {
     }
 
     @Override
-    public String generate() {
-        StringBuilder sb = new StringBuilder("<html><body>").append(new SvgGenerator(map, width, height).generate()).append("</body></html>");
-        return sb.toString();
+    public void generate() {
+        SvgGenerator svgGenerator = new SvgGenerator(map, width, height);
+        svgGenerator.generate();
+        StringBuilder sb = new StringBuilder("<html><body>").append(svgGenerator.getResult()).append("</body></html>");
+        result = sb.toString();
+    }
+
+    @Override
+    public String getResult() {
+        return result;
     }
 }

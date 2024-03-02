@@ -3,35 +3,21 @@ package generator;
 import model.*;
 import properties.PropertiesHandler;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+public class SvgGenerator extends GeneratorDrawer {
 
-public class SvgGenerator implements Generator {
-
-    public static int DEFAULT_WIDTH = 300;
-    public static int DEFAULT_HEIGHT = 150;
-
-    private OsmMap map;
-    private int width;
-    private int height;
-
-    private Set<String> drawnWayIds = new HashSet<>();
+    private String result;
 
     public SvgGenerator(OsmMap map) {
         this(map, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public SvgGenerator(OsmMap map, int width, int height) {
-        this.map = map;
-        this.width = width;
-        this.height = height;
+        super(map, width, height);
     }
 
     @Override
-    public String generate() {
-        StringBuilder sb = new StringBuilder("<svg width=\"" + width + "\" height=\"" + height + "\" xmlns=\"http://www.w3.org/2000/svg\" style=\"" + PropertiesHandler.getProperty("default-style") + "\">\n");
+    public void generate() {
+        StringBuilder sb = new StringBuilder("<svg width=\"" + width + "\" height=\"" + height + "\" xmlns=\"http://www.w3.org/2000/svg\" style=\"" + PropertiesHandler.getProperty("svg-default-style") + "\">\n");
         for (OsmRelation relation : map.getRelations().values()) {
             sb.append(drawRelation(relation));
         }
@@ -39,7 +25,12 @@ public class SvgGenerator implements Generator {
             sb.append(drawWay(way));
         }
         sb.append("</svg>");
-        return sb.toString();
+        result= sb.toString();
+    }
+
+    @Override
+    public String getResult() {
+        return result;
     }
 
     private String drawRelation(OsmRelation relation) {
@@ -62,7 +53,7 @@ public class SvgGenerator implements Generator {
             OsmNode node = map.getNodes().get(way.getNds().get(i).getRef());
             sb.append(scaleLongitude(node.getLon())).append(",").append(scaleLatitude(node.getLat())).append(" ");
         }
-        sb.append("\" style=\"" + PropertiesHandler.getProperty("relation-style") + "\" />");
+        sb.append("\" style=\"" + PropertiesHandler.getProperty("svg-relation-style") + "\" />");
         drawnWayIds.add(way.getId());
         return sb.toString();
     }
@@ -77,19 +68,8 @@ public class SvgGenerator implements Generator {
                 .append("\" x1=\"").append(scaleLongitude(node1.getLon()))
                 .append("\" y2=\"").append(scaleLatitude(node2.getLat()))
                 .append("\" x2=\"").append(scaleLongitude(node2.getLon()))
-                .append("\" style=\"" + PropertiesHandler.getProperty("way-style") + "\" />\n");
+                .append("\" style=\"" + PropertiesHandler.getProperty("svg-way-style") + "\" />\n");
         }
-        drawnWayIds.add(way.getId());
         return sb.toString();
-    }
-
-    private double scaleLatitude(double latitude) {
-        double norm = (latitude - map.getBounds().getMinLat()) / (map.getBounds().getMaxLat() - map.getBounds().getMinLat());
-        return height - (norm * height);
-    }
-
-    private double scaleLongitude(double longitude) {
-        double norm = (longitude - map.getBounds().getMinLon()) / (map.getBounds().getMaxLon() - map.getBounds().getMinLon());
-        return norm * width;
     }
 }
