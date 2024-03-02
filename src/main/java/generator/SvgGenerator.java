@@ -1,6 +1,7 @@
 package generator;
 
 import model.*;
+import properties.PropertiesHandler;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,7 @@ public class SvgGenerator implements Generator {
 
     @Override
     public String generate() {
-        StringBuilder sb = new StringBuilder("<svg width=\"" + width + "\" height=\"" + height + "\" xmlns=\"http://www.w3.org/2000/svg\" style=\"background-color:gray\">\n");
+        StringBuilder sb = new StringBuilder("<svg width=\"" + width + "\" height=\"" + height + "\" xmlns=\"http://www.w3.org/2000/svg\" style=\"" + PropertiesHandler.getProperty("default-style") + "\">\n");
         for (OsmRelation relation : map.getRelations().values()) {
             sb.append(drawRelation(relation));
         }
@@ -61,7 +62,7 @@ public class SvgGenerator implements Generator {
             OsmNode node = map.getNodes().get(way.getNds().get(i).getRef());
             sb.append(scaleLongitude(node.getLon())).append(",").append(scaleLatitude(node.getLat())).append(" ");
         }
-        sb.append("\" style=\"fill:lime;stroke:blue;stroke-width:2;\" />");
+        sb.append("\" style=\"" + PropertiesHandler.getProperty("relation-style") + "\" />");
         drawnWayIds.add(way.getId());
         return sb.toString();
     }
@@ -76,7 +77,7 @@ public class SvgGenerator implements Generator {
                 .append("\" x1=\"").append(scaleLongitude(node1.getLon()))
                 .append("\" y2=\"").append(scaleLatitude(node2.getLat()))
                 .append("\" x2=\"").append(scaleLongitude(node2.getLon()))
-                .append("\" style=\"stroke:red;stroke-width:1\" />\n");
+                .append("\" style=\"" + PropertiesHandler.getProperty("way-style") + "\" />\n");
         }
         drawnWayIds.add(way.getId());
         return sb.toString();

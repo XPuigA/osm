@@ -6,16 +6,11 @@ import org.junit.jupiter.api.Assertions;
 import parser.OsmParser;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
 
 import static base.Utils.getResourceFileAsString;
 
 
-public class TestParser {
-
+public class OsmParserTest {
 
     @Test
     public void parse1() throws IOException {

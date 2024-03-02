@@ -13,7 +13,7 @@ import static base.Utils.getResourceFileAsString;
 
 public class HtmlFileGeneratorTest {
 
-    private static String destination1 = "D:\\\\map.html";
+    private static String destination1 = "C:\\\\tmp\\\\map.html";
 
     @BeforeAll
     static void deleteFile() throws IOException {
