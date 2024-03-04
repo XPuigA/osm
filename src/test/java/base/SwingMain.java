@@ -3,6 +3,7 @@ package base;
 import javax.swing.*;
 import java.io.IOException;
 
+import generator.SwingComponent;
 import generator.SwingGenerator;
 import model.OsmMap;
 import parser.OsmParser;
@@ -15,11 +16,11 @@ public class SwingMain {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("map2.osm"));
 
         JFrame frame = new JFrame("");
+        frame.getContentPane().add(new SwingComponent(osmMap));
         frame.setSize(300, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        SwingGenerator generator = new SwingGenerator(frame.getContentPane().getGraphics(), osmMap);
-        generator.generate();
-        frame.getContentPane().add(generator.getResult());
+
+
     }
 }

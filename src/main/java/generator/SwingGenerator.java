@@ -1,5 +1,6 @@
 package generator;
 
+import exception.GraphicsNotDefined;
 import model.*;
 import properties.PropertiesHandler;
 
@@ -8,21 +9,24 @@ import java.awt.*;
 
 public class SwingGenerator extends GeneratorDrawer {
 
-    private final Graphics graphics;
-    private Component component;
+    private Graphics2D graphics;
 
-    public SwingGenerator(Graphics graphics, OsmMap map) {
-        this(graphics, map, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    public SwingGenerator(OsmMap map) {
+        this(map, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    public SwingGenerator(Graphics graphics, OsmMap map, int width, int height) {
+    public SwingGenerator(OsmMap map, int width, int height) {
         super(map, width, height);
+    }
+
+    public void setGraphics(Graphics2D graphics) {
         this.graphics = graphics;
-        this.component = new JPanel();
     }
 
     @Override
-    public void generate() {
+    public void generate() throws Exception {
+        if (graphics == null) { throw new GraphicsNotDefined(); }
+        drawnWayIds.clear();
         for (OsmRelation relation : map.getRelations().values()) {
             drawRelation(relation);
         }
@@ -32,9 +36,7 @@ public class SwingGenerator extends GeneratorDrawer {
     }
 
     @Override
-    public Component getResult() {
-        return component;
-    }
+    public Graphics2D getResult() { return graphics; }
 
     private void drawRelation(OsmRelation relation) {
         String type = relation.getTags().get("type");
@@ -50,12 +52,10 @@ public class SwingGenerator extends GeneratorDrawer {
 
     private void drawPolygon(OsmWay way) {
         Polygon p = new Polygon();
-        StringBuilder sb = new StringBuilder("<polygon points=\"");
         for (int i = 0; i < way.getNds().size(); ++i) {
             OsmNode node = map.getNodes().get(way.getNds().get(i).getRef());
             p.addPoint((int) scaleLongitude(node.getLon()), (int) scaleLatitude(node.getLat()));
         }
-        sb.append("\" style=\"" + PropertiesHandler.getProperty("svg-relation-style") + "\" />");
         drawnWayIds.add(way.getId());
         graphics.drawPolygon(p);
     }

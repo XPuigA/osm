@@ -33,7 +33,7 @@ public class HtmlFileGenerator implements Generator {
     }
 
     @Override
-    public void generate() throws IOException {
+    public void generate() throws Exception {
         HtmlGenerator generator = new HtmlGenerator(map, width, height);
         RandomAccessFile stream = new RandomAccessFile(destination, "rw");
         FileChannel channel = stream.getChannel();
