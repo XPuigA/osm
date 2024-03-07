@@ -13,7 +13,7 @@ import static base.Utils.getResourceFileAsString;
 
 public class HtmlFileGeneratorTest {
 
-    private static String destination1 = "C:\\\\tmp\\\\map.html";
+    private static String destination1 = "D:\\\\map.html";
 
     @BeforeAll
     static void deleteFile() throws IOException {
@@ -33,6 +33,16 @@ public class HtmlFileGeneratorTest {
     @Test
     public void test2() throws Exception {
         OsmMap osmMap = OsmParser.parse(getResourceFileAsString("xml1.xml"));
+        HtmlFileGenerator generator = new HtmlFileGenerator(osmMap, 300, 150, destination1);
+        generator.generate();
+        String generated = generator.getResult();
+        System.out.println(generated);
+
+    }
+
+    @Test
+    public void test3() throws Exception {
+        OsmMap osmMap = OsmParser.parse(getResourceFileAsString("bcn1.osm"));
         HtmlFileGenerator generator = new HtmlFileGenerator(osmMap, 300, 150, destination1);
         generator.generate();
         String generated = generator.getResult();

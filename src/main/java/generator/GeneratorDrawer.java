@@ -28,11 +28,26 @@ public abstract class GeneratorDrawer implements Generator {
 
     protected double scaleLatitude(double latitude) {
         double norm = (latitude - map.getBounds().getMinLat()) / (map.getBounds().getMaxLat() - map.getBounds().getMinLat());
-        return height - (norm * height);
+        return clampHeight(height - (norm * height));
+    }
+
+    private double clampHeight(double height) {
+        return clamp(height, this.height);
     }
 
     protected double scaleLongitude(double longitude) {
         double norm = (longitude - map.getBounds().getMinLon()) / (map.getBounds().getMaxLon() - map.getBounds().getMinLon());
-        return norm * width;
+        return clampWidth(norm * width);
+    }
+
+    private double clampWidth(double width) {
+        return clamp(width, this.width);
+    }
+
+    private double clamp(double value, int max) {
+        return value;
+        /*if (value < 0) return 0;
+        else if (value > max) return max;
+        return value;*/
     }
 }
